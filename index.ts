@@ -28,6 +28,17 @@ interface ICar {
   setBrand(brand: string): void;
 }
 
+class Bike {
+  color: Color;
+  year: number;
+  type: CarType;
+
+  constructor(){
+    this.color = "blue"
+    this.year = 2020
+    this.type = CarType.SEDAN
+  }
+}
 
 class Car implements ICar {
   private name: String;
@@ -105,7 +116,7 @@ let car2 = new Car({brand: 'Nissan', color: 'green', type: CarType.SUV, year: 20
 // console.log("typeof car: ", typeof car2);
 // console.log("typeof carType: ", typeof car2.setBrand);
 
-let car3 = new Car({brand: 'Nissan', color: 'blue', type: CarType.SUV, year: 2019});
+let car3 = new Car({brand: 'Mazda', color: 'blue', type: CarType.TRUCK, year: 2021});
 // console.log("============= Car 3 =============");
 // console.log("brand: ", car3.getBrand());
 // console.log("color: ", car3.getColor);
@@ -114,10 +125,13 @@ let car3 = new Car({brand: 'Nissan', color: 'blue', type: CarType.SUV, year: 201
 
 type PropertiesCar = keyof Car;
 
-let cars = [car, car2]
+let cars = [car, car2, car3];
 
-function filterCar(property: PropertiesCar, value: Car[PropertiesCar]){
-  return cars.filter((car)=> car[property] == value);
+let bike = new Bike();
+let bikes = [bike]
+
+function filterCar<T>(vehicles: T[], property: keyof T, value: T[keyof T]): T[]{
+  return vehicles.filter((car)=> car[property] === value);
 }
 
-console.log(filterCar("getColor", "blue"))
+console.log(filterCar<Bike>(bikes, "type", CarType.TRUCK));

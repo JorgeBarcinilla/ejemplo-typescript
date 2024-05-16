@@ -6,20 +6,18 @@ enum CarType {
   VAN
 }
 
-type Color = 'red' | 'blue' | 'green';
-
-
+type CarColor = 'Red' | 'Blue' | 'Green';
 
 interface CreateCar {
-  color: Color;
+  color: CarColor;
   year: number;
   type: CarType;
   brand: string;
 }
 
 interface ICar {
-  getColor: Color;
-  setColor: Color;
+  getColor: CarColor;
+  setColor: CarColor;
   getYear(): number;
   setYear: (year: number) => void;
   getType: CarType;
@@ -28,21 +26,9 @@ interface ICar {
   setBrand(brand: string): void;
 }
 
-class Bike {
-  color: Color;
-  year: number;
-  type: CarType;
-
-  constructor(){
-    this.color = "blue"
-    this.year = 2020
-    this.type = CarType.SEDAN
-  }
-}
-
 class Car implements ICar {
   private name: String;
-  private color: Color;
+  private color: CarColor;
   private year: number;
   private type: CarType;
   private brand: string;
@@ -72,10 +58,10 @@ class Car implements ICar {
     return this.name
   }
 
-  get getColor (): Color {
+  get getColor (): CarColor {
     return this.color;
   }
-  set setColor(color: Color) {
+  set setColor(color: CarColor) {
     this.color = color;
   }
 
@@ -102,21 +88,21 @@ class Car implements ICar {
 
 }
 
-let car = new Car({brand: 'Toyota', color: 'red', type: CarType.SEDAN, year: 2020});
+let car = new Car({brand: 'Toyota', color: 'Red', type: CarType.SEDAN, year: 2020});
 // console.log("============= Car =============");
 // console.log("brand: ", car.getBrand());
 // console.log("color: ", car.getColor);
 // console.log("typeof car: ", typeof car);
 // console.log("typeof carType: ", typeof car.getType);
 
-let car2 = new Car({brand: 'Nissan', color: 'green', type: CarType.SUV, year: 2019});
+let car2 = new Car({brand: 'Nissan', color: 'Green', type: CarType.SUV, year: 2019});
 // console.log("============= Car 2 =============");
 // console.log("brand: ", car2.getBrand());
 // console.log("color: ", car2.getColor);
 // console.log("typeof car: ", typeof car2);
 // console.log("typeof carType: ", typeof car2.setBrand);
 
-let car3 = new Car({brand: 'Mazda', color: 'blue', type: CarType.TRUCK, year: 2021});
+let car3 = new Car({brand: 'Mazda', color: 'Blue', type: CarType.TRUCK, year: 2021});
 // console.log("============= Car 3 =============");
 // console.log("brand: ", car3.getBrand());
 // console.log("color: ", car3.getColor);
@@ -127,11 +113,41 @@ type PropertiesCar = keyof Car;
 
 let cars = [car, car2, car3];
 
-let bike = new Bike();
-let bikes = [bike]
-
-function filterCar<T>(vehicles: T[], property: keyof T, value: T[keyof T]): T[]{
-  return vehicles.filter((car)=> car[property] === value);
+enum BikeType{
+  ENDURO = 1,
+  SPORT,
+  SUPERSPORT,
+  URBAN
 }
 
-console.log(filterCar<Bike>(bikes, "type", CarType.TRUCK));
+type BikeColor = "Orange" | "Gray" | "Black"
+
+interface ICreateBike{
+  color: BikeColor;
+  year: number;
+  type: BikeType;
+}
+
+class Bike {
+  color: BikeColor;
+  year: number;
+  type: BikeType;
+
+  constructor(createBike: ICreateBike){
+    this.color = createBike.color
+    this.year = createBike.year
+    this.type = createBike.type
+  }
+}
+let bike = new Bike({color: 'Black', type: BikeType.ENDURO, year: 2022});
+let bike2 = new Bike({color: 'Gray', type: BikeType.SUPERSPORT, year: 2020});
+let bike3 = new Bike({color: 'Orange', type: BikeType.URBAN, year: 2021});
+let bikes = [bike, bike2, bike3]
+
+
+
+function filter<T>(vehicles: T[], property: keyof T, value: T[keyof T]): T[]{
+  return vehicles.filter((vehicle)=> vehicle[property] === value);
+}
+
+console.log(filter<Bike>(bikes, "year", 2022));

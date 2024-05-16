@@ -15,6 +15,27 @@ interface CreateCar {
   brand: string;
 }
 
+type EditCar = Partial<CreateCar>;
+type EditCar2 = Pick<CreateCar, 'brand' | 'color'>;
+type EditCar2Optional = Partial<EditCar2>;
+type EditCar3 = Omit<CreateCar, 'brand'>;
+type EditCarRequired = Required<EditCar>;
+type Comodin = Record<string, number | string | Date>;
+type EditCarReadonly = Readonly<CreateCar>;
+
+let example2: EditCarReadonly = {
+  color: 'Red',
+  year: 2020,
+  type: CarType.SEDAN,
+  brand: 'Toyota'
+};
+
+let example: Comodin = {
+  "key": 1,
+  "key2": "2",
+  "key3": new Date()
+};
+
 interface ICar {
   getColor: CarColor;
   setColor: CarColor;
@@ -151,3 +172,4 @@ function filter<T>(vehicles: T[], property: keyof T, value: T[keyof T]): T[]{
 }
 
 console.log(filter<Bike>(bikes, "year", 2022));
+
